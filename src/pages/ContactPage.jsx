@@ -7,14 +7,15 @@ import { useState } from "react";
 import { useSubmitContactMutation } from "../redux/services/getlinkedAPI";
 
 export default function contactPage() {
-  const [formData, setFormData] = useState({
+  const defaultData = {
     email: "",
     phone_number: "",
     first_name: "",
     team_name: "",
     message: "",
     topic: "",
-  });
+  };
+  const [formData, setFormData] = useState(defaultData);
 
   const [submitContact, { isLoading, isError, error }] =
     useSubmitContactMutation();
@@ -32,6 +33,7 @@ export default function contactPage() {
 
     try {
       const result = await submitContact(postData).unwrap();
+      setFormData(defaultData);
       console.log(result);
     } catch (error) {
       console.error(error.message);
@@ -153,6 +155,11 @@ export default function contactPage() {
                   placeholder="Message"
                   className="px-4 pt-4 pb-24 rounded focus:outline-none bg-[#20153d] border-white border"
                 />
+                {!isLoading && !isError && (
+                  <p className="text-[#D434FE]">
+                    Thank you for reaching out to us!
+                  </p>
+                )}
                 <div className="flex justify-center pt-6 items-center">
                   <button
                     onClick={handleSubmit}
