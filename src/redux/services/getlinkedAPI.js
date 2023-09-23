@@ -23,5 +23,5 @@ const getlinkedAPI = createApi({
   }),
 });
 
-export const { useRegisterMutation } = getlinkedAPI;
+export const { useRegisterMutation, useSubmitContactMutation } = getlinkedAPI;
 export default getlinkedAPI;

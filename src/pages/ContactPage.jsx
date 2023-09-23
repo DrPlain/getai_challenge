@@ -4,7 +4,7 @@ import PurpleStar from "../assets/images/purplestar.png";
 import WhiteStar from "../assets/images/graystar.png";
 import SocialMedia from "../assets/images/socialMedia.png";
 import { useState } from "react";
-import { useRegisterMutation } from "../redux/services/getlinkedAPI";
+import { useSubmitContactMutation } from "../redux/services/getlinkedAPI";
 
 export default function contactPage() {
   const [formData, setFormData] = useState({
@@ -16,7 +16,8 @@ export default function contactPage() {
     topic: "",
   });
 
-  const [register, { isLoading, isError, error }] = useRegisterMutation();
+  const [submitContact, { isLoading, isError, error }] =
+    useSubmitContactMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,8 +31,8 @@ export default function contactPage() {
     // console.log(postData);
 
     try {
-      await register(postData).unwrap();
-      console.log("successful");
+      const result = await submitContact(postData).unwrap();
+      console.log(result);
     } catch (error) {
       console.error(error.message);
     }
