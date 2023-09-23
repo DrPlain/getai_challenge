@@ -3,10 +3,41 @@ import BackIcon from "../assets/images/backIcon.png";
 import PurpleStar from "../assets/images/purplestar.png";
 import WhiteStar from "../assets/images/graystar.png";
 import SocialMedia from "../assets/images/socialMedia.png";
+import { useState } from "react";
+import { useRegisterMutation } from "../redux/services/getlinkedAPI";
 
 export default function contactPage() {
+  const [formData, setFormData] = useState({
+    email: "",
+    phone_number: "",
+    first_name: "",
+    team_name: "",
+    message: "",
+    topic: "",
+  });
+
+  const [register, { isLoading, isError, error }] = useRegisterMutation();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { email, first_name, phone_number, message } = formData;
+    const postData = { email, first_name, phone_number, message };
+    // console.log(postData);
+
+    try {
+      await register(postData).unwrap();
+      console.log("successful");
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   return (
-    <div className="pt-[65px] md:pt-[80px] bg-[#150E28] text-white pb-10">
+    <div className="pt-[65px] md:pt-[120px] bg-[#150E28] text-white pb-10 h-screen">
       <div className="mx-6 pt-4 py-2">
         <Link to="/">
           <img
@@ -75,42 +106,57 @@ export default function contactPage() {
               <div className="flex flex-col gap-y-4">
                 <input
                   type="text"
-                  name="teamName"
+                  name="team_name"
+                  value={formData.team_name}
+                  onChange={handleChange}
                   placeholder="Team's Name"
                   className="md:hidden px-4 py-2 rounded focus:outline-none bg-[#20153d] border-white border"
                 />
                 <input
                   type="text"
-                  name="firstName"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleChange}
                   placeholder="First Name"
                   className="hidden md:flex px-4 py-2 rounded focus:outline-none bg-[#20153d] border-white border"
                 />
                 <input
                   type="text"
                   name="topic"
+                  value={formData.topic}
+                  onChange={handleChange}
                   placeholder="Topic"
                   className="md:hidden px-4 py-2 rounded focus:outline-none bg-[#20153d] border-white border"
                 />
                 <input
                   type="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Email"
                   className="md:hidden px-4 py-2 rounded focus:outline-none bg-[#20153d] border-white border"
                 />
                 <input
                   type="email"
-                  name="mail"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Mail"
                   className="hidden md:flex px-4 py-2 rounded focus:outline-none bg-[#20153d] border-white border"
                 />
                 <input
                   type="text"
                   name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="Message"
                   className="px-4 pt-4 pb-24 rounded focus:outline-none bg-[#20153d] border-white border"
                 />
                 <div className="flex justify-center pt-6 items-center">
-                  <button className="rounded px-10 md:ml-0 ml-4 py-2 bg-gradient-to-r from-[#D434FE] via-[#D434FE] to-[#903AFF]">
+                  <button
+                    onClick={handleSubmit}
+                    className="rounded px-10 md:ml-0 ml-4 py-2 bg-gradient-to-r from-[#D434FE] via-[#D434FE] to-[#903AFF]"
+                  >
                     Submit
                   </button>
                 </div>

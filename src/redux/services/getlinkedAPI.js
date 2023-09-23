@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const getlinkedAPI = createApi({
   reducerPath: "getlinkedAPI",
   baseQuery: fetchBaseQuery({ baseUrl: "https://backend.getlinked.ai/" }),
+  credentials: "include",
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (formData) => ({
