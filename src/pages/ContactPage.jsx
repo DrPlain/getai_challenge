@@ -16,6 +16,7 @@ export default function contactPage() {
     topic: "",
   };
   const [formData, setFormData] = useState(defaultData);
+  const [onSuccess, setOnSuccess] = useState(false);
 
   const [submitContact, { isLoading, isError, error }] =
     useSubmitContactMutation();
@@ -34,6 +35,7 @@ export default function contactPage() {
     try {
       const result = await submitContact(postData).unwrap();
       setFormData(defaultData);
+      setOnSuccess(true);
       console.log(result);
     } catch (error) {
       console.error(error.message);
@@ -155,10 +157,13 @@ export default function contactPage() {
                   placeholder="Message"
                   className="px-4 pt-4 pb-24 rounded focus:outline-none bg-[#20153d] border-white border"
                 />
-                {!isLoading && !isError && (
+                {onSuccess && (
                   <p className="text-[#D434FE]">
                     Thank you for reaching out to us!
                   </p>
+                )}
+                {isLoading && (
+                  <p className="text-[#D434FE]">Submitting request...</p>
                 )}
                 <div className="flex justify-center pt-6 items-center">
                   <button
